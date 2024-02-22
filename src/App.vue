@@ -1,89 +1,89 @@
 <template>
-  <div class="black-bg" v-if = "modalstatus == true">
-    <div class="white-bg">
-      <h4>상세 페이지</h4>
-      <p>상세 페이지 내용</p>
-      <button @click="modalstatus=false">닫기</button>
-    </div>
-  </div>
-
-
-
-
-  <div class="menu">
-    <a v-for="(a,i) in menus" :key="i"> {{ a }} </a>
-  </div>
-
-
-
-
-  
-  <div v-for="(Products,i) in products" :key="i">
-    <img :src = "products[i].image" class="room-img">
-    <h4 @click="modalstatus=true">{{products[i].title}}</h4>
-    <p >{{products[i].price}}원</p>
-  </div>
+  <Header/>
+  <RouterView/>
+  <Footer/>
 </template>
 
 <script>
-
-import products from './data/post.js'
-
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import store from "@/scripts/store";
+import {watch} from "vue";
+import {useRoute} from "vue-router/dist/vue-router";
 
 export default {
   name: 'App',
-  data() {
-    return {
-      modalstatus : false,
-
-      menus : ['Home', 'Products', 'About'],
-      prices : ['60', '70', '80'],
-      products : products,
-      reports : [0, 0, 0], 
-    }
-  },
-  methods : {
-  },
   components: {
-  }
+    Footer,
+    Header
+  },
+  setup() {
+  const checkToken = () => {
+    const token = sessionStorage.getItem('token'); // 세션 스토리지에서 JWT를 가져옵니다.
+    if (!token) {
+      // JWT가 없으면 사용자를 로그아웃 상태로 설정합니다.
+      store.commit("setAccount", 0);
+    }
+  };
+
+  const route = useRoute();
+
+  watch(route, () => {
+    checkToken();
+  });
+}
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+}
+
+.b-example-divider {
+  height: 3rem;
+  background-color: rgba(0, 0, 0, .1);
+  border: solid rgba(0, 0, 0, .15);
+  border-width: 1px 0;
+  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+.b-example-vr {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 100vh;
+}
+
+.bi {
+  vertical-align: -.125em;
+  fill: currentColor;
+}
+
+.nav-scroller {
+  position: relative;
+  z-index: 2;
+  height: 2.75rem;
+  overflow-y: hidden;
+}
+
+.nav-scroller .nav {
+  display: flex;
+  flex-wrap: nowrap;
+  padding-bottom: 1rem;
+  margin-top: -1px;
+  overflow-x: auto;
   text-align: center;
-  color: #2c3e50;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
 }
-.menu {
-  background: darkslateblue;
-  padding: 15px;
-  border-radius: 5px;
-}
-.menu a {
-  color: white;
-  padding: 10px;
-}
-.room-img{
-  widows: 100%;
-  margin-top: 40px;
-}
-body {
-  margin : 0;
-}
-div {
-  box-sizing: border-box;
-}
-.black-bg {
-  width: 100%; height:100%;
-  background: rgba(0,0,0,0.5);
-  position: fixed; padding: 20px;
-}
-.white-bg {
-  width: 100%; background: white;
-  border-radius: 8px;
-  padding: 20px;
-} 
 </style>
