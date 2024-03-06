@@ -1,20 +1,16 @@
 <template>
-  <div class="card shadow-sm">
-    <span class="img" :style="{backgroundImage: `url(${item.imgurl})`}"/>
-    <div class="card-body">
-      <p class="card-text">
-        <span>{{ item.product_name }} &nbsp;</span>
-      </p>
-      <div class="d-flex justify-content-between align-items-center">
-        <button class="btn btn-primary" @click="addToCart(item.id)">
-          <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+  <div class="w-auto overflow-hidden bg-white rounded-lg shadow-sm h-80">
+    <div class="flex items-center justify-center w-48 h-48 m-auto">
+      <div :style="{backgroundImage: `url(${item.imgurl})`}" class="w-full h-full bg-contain"></div>
+    </div>
+    <div class="p-2 text-center">
+      <div class="mb-2 text-gray-800 text-balance">{{ item.product_name }}</div>
+      <div class="flex justify-between">
+        <span class="text-sm text-gray-600">원가 : <br>{{ lib.getNumberFormatted(item.price) }}원</span>
+        <span class="text-sm text-red-500">할인가 : <br>{{ lib.getNumberFormatted(item.price - (item.price * 10 / 100)) }}원</span>
+        <button v-if="$store.state.account.isLogin" @click="addToCart(item.id)" class="px-1 py-1 text-white bg-blue-500 rounded-lg">
+          <i aria-hidden="true"></i> 추가
         </button>
-        <small class="price text-muted">
-          {{ lib.getNumberFormatted(item.price) }}원
-        </small>
-        <small class="real text-danger">
-          {{ lib.getNumberFormatted(item.price - (item.price * 10 / 100)) }}원
-        </small>
       </div>
     </div>
   </div>
@@ -42,17 +38,5 @@ export default {
 }
 </script>
 
-<style scoped>
-.card .img {
-  display: inline-block;
-  width: 50%;
-  height: 200px;
-  background-size: cover;
-  background-position: center;
-  margin: 0 auto;
-}
-
-.card .card-body .price {
-  text-decoration: line-through;
-}
+<style>
 </style>
