@@ -1,29 +1,50 @@
 <template>
-  <div class="signup">
-    <h2>Please Sign up</h2>
-    <form @submit.prevent="submitForm">
-      <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" v-model="state.form.name" required>
+  <div class="flex flex-col items-stretch justify-center min-h-full px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 class="mt-10 text-2xl font-bold leading-9 tracking-tight text-center text-gray-900">회원 가입</h2>
+      <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form @submit.prevent="submitForm" class="space-y-6">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="floatingName" 
+              v-model="state.form.name" required>
+            <label for="floatingName">Name</label>
+          </div>
+          <div class="form-floating">
+            <input type="email" class="form-control" id="floatingEmail" 
+              v-model="state.form.email" required>
+            <label for="floatingEmail">Email address</label>
+          </div>
+          <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" 
+              v-model="state.form.password" required>
+            <label for="floatingPassword">
+              Password<br>
+              문자와 숫자를 8자 이상 입력해 주세요
+            </label>
+          </div>
+          <div class="form-floating">
+            <input type="text" class="form-control" id="floatingAddress" 
+              v-model="state.form.address" required>
+            <label for="floatingAddress">Address</label>
+          </div>
+          <div class="form-floating">
+            <input type="text" class="form-control" id="floatingPhone" 
+              v-model="state.form.phone" required>
+            <label for="floatingPhone">
+              Phone<br>
+              -는 제외하고 입력해 주세요
+              </label>
+          </div>
+          <div class="flex items-center justify-between mb-0">
+            <router-link to="/login" class="text-sm font-bold text-gray-700 hover:text-gray-300">로그인 화면으로 돌아가기</router-link>
+            <button @click="submitForm()" 
+                    class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline">
+                    회원 가입
+                    </button>
+          </div>
+        </form>
       </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="email" v-model="state.form.email" required>
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" v-model="state.form.password" required>
-      </div>
-      <div class="mb-3">
-        <label for="address" class="form-label">Address</label>
-        <input type="text" class="form-control" id="address" v-model="state.form.address" required>
-      </div>
-      <div class="mb-3">
-        <label for="phone" class="form-label">Phone</label>
-        <input type="text" class="form-control" id="phone" v-model="state.form.phone" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Sign up</button>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -48,8 +69,7 @@ export default {
     const submitForm = () => {
       const errorMessage = validation.validateForm(state.form); // 폼 유효성 검사 실행
       if (errorMessage) {
-        alert(errorMessage);
-        return;
+        return alert(errorMessage);
       }
       const formattedPhone = validation.formatPhoneNumber(state.form.phone); // 전화번호 자동 포맷팅
       state.form.phone = formattedPhone; // 포맷팅된 전화번호를 state에 할당
@@ -70,10 +90,5 @@ export default {
 }
 </script>
 
-<style scoped>
-.signup {
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
-}
+<style>
 </style>
