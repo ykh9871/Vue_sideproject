@@ -4,13 +4,17 @@ const store = createStore({
     state() {
         return {
             account: {
-                id: 0
+                email: '',
+                exp : '',
+                isLogin : false
             }
         }
     },
     mutations: {
-        setAccount(state, payload) {
-            state.account.id = payload;
+        setAccount(state, {email, exp, isLogin}) {
+            state.account.email = email;
+            state.account.exp = exp;
+            state.account.isLogin = isLogin;
         }
     }
 })
